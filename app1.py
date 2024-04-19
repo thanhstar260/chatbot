@@ -55,14 +55,15 @@ def get_conversation_chain(vectorstore):
     )
     return conversation_chain
 
-def handle_user_input(user_question, template_prompt, context):
+def handle_user_input(user_question, template_prompt):
     template = template_prompt.replace("{question}", user_question)
-    user_question = template
-    
-    response = st.session_state.conversation({'question': user_question})
+    user_question2 = template
+            
+    response = st.session_state.conversation({'question': user_question2})
+    st.session_state.user_questions.append(user_question)
     st.session_state.chat_history = response['chat_history']
-    st.write(st.session_state.chat_history)
-    st.write(st.session_state.conversation.memory)
+    # st.write(st.session_state.chat_history)
+    # st.write(st.session_state.conversation.memory)
     for i, message in enumerate(st.session_state.chat_history):
         if i % 2 == 0:
             st.write("<span style='color:blue'>YOU</span>" + user_template.replace("{{MSG}}", st.session_state.user_questions[int(i/2)]), unsafe_allow_html=True)
@@ -116,8 +117,7 @@ def main():
     
 
     if user_question is not None and user_question != "":
-        st.session_state.user_questions.append(user_question)
-        handle_user_input(user_question, template_prompt, context)
+        handle_user_input(user_question, template_prompt)
 
 
 if __name__ == "__main__":
