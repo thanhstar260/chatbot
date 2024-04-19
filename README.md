@@ -5,6 +5,9 @@ chat with your data
 ```python
 pip install -r setup.txt
 ```
-
+*Then*
+```
+streamlit run app.py
+```
 ## Demo:
 ![Demo](./demo.png)
