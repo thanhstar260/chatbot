@@ -62,7 +62,7 @@ def handle_user_input(user_question):
         if i % 2 == 0:
             st.write("<span style='color:blue'>YOU</span>" + user_template.replace("{{MSG}}", message.content), unsafe_allow_html=True)
         else:
-            st.write("<span style='color:red'>CHATBOT</span>" + bot_template.replace("{{MSG}}", message.content), unsafe_allow_html=True)
+            st.write("<span style='color:green'>CHATBOT</span>" + bot_template.replace("{{MSG}}", message.content), unsafe_allow_html=True)
 
 
 def main():
