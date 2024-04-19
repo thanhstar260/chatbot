@@ -1,8 +1,8 @@
 # Using Cohere embedding,Cohere Chat model and FAISS Vectorstore
+
 import streamlit as st
 from PyPDF2 import PdfReader
 from langchain.text_splitter import CharacterTextSplitter
-# from langchain_community.embeddings import OpenAIEmbeddings, HuggingFaceInstructEmbeddings
 from langchain.embeddings.cohere import CohereEmbeddings
 from langchain.memory import ConversationBufferMemory
 from langchain.chains import ConversationalRetrievalChain
@@ -34,7 +34,6 @@ def get_text_chunks(raw_text):
 
 def get_vectorstore(text_chunks):
     _ = load_dotenv(find_dotenv())
-    # embedding_model = OpenAIEmbeddings()
     embeddings = CohereEmbeddings(
         model="embed-multilingual-light-v3.0", cohere_api_key= os.environ['COHERE_API_KEY']
     )
@@ -54,10 +53,9 @@ def get_conversation_chain(vectorstore):
     return conversation_chain
 
 def handle_user_input(user_question):
+    # st.write(st.session_state.chat_history)
     response = st.session_state.conversation({'question': user_question})
-    # st.write(response)
     st.session_state.chat_history = response['chat_history']
-    # st.write(response)
     for i, message in enumerate(st.session_state.chat_history):
         if i % 2 == 0:
             st.write("<span style='color:blue'>YOU</span>" + user_template.replace("{{MSG}}", message.content), unsafe_allow_html=True)
@@ -78,12 +76,6 @@ def main():
     st.header("Chat with your data :book:")
     user_question = st.text_input("Ask a question about your data")
 
-    if user_question is not None and user_question != "":
-        handle_user_input(user_question) 
-
-
-    # st.write(user_template, unsafe_allow_html=True)
-    # st.write(bot_template, unsafe_allow_html=True)
              
     with st.sidebar:
         st.subheader("Your documents")
@@ -96,16 +88,15 @@ def main():
                 # get chunks of text
                 text_chunks = get_text_chunks(raw_text)
 
-                
                 # Embedding
                 vectorstore = get_vectorstore(text_chunks)
                 
-                # create conversation chain
+                # thêm vào st.session_state để mỗi lần chat biến này ko thay đổi
                 st.session_state.conversation = get_conversation_chain(vectorstore)
     
-    # st.session_state.conversation
 
-
+    if user_question is not None and user_question != "":
+        handle_user_input(user_question) 
 
 
 if __name__ == "__main__":
