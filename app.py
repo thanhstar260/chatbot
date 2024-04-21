@@ -4,7 +4,8 @@
 import streamlit as st
 from langchain.chains import create_history_aware_retriever, create_retrieval_chain
 from langchain.chains.combine_documents import create_stuff_documents_chain
-from langchain_chroma import Chroma
+# from langchain_chroma import Chroma
+from langchain_community.vectorstores import FAISS
 from langchain_community.chat_message_histories import ChatMessageHistory
 from langchain_community.document_loaders import DirectoryLoader
 from langchain_core.chat_history import BaseChatMessageHistory
@@ -27,7 +28,7 @@ def get_vectorstore(pdf_directory, embedding):
 
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
     splits = text_splitter.split_documents(docs)
-    vectorstore = Chroma.from_documents(documents=splits, embedding=embedding)
+    vectorstore = FAISS.from_documents(documents=splits, embedding=embedding)
     
     return vectorstore
 
