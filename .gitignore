@@ -1,3 +1,4 @@
 .env
 __pycache__/
-explain.txt
+langchain/
+pdfs/
