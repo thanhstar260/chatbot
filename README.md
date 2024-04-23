@@ -3,7 +3,7 @@ chat with your data
 
 ## run
 ```python
-pip install -r setup.txt
+pip install -r requirements.txt
 ```
 *Then*
 ```
